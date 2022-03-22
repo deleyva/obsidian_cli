@@ -44,7 +44,7 @@ def get_input_type() -> tuple:
     return data.get(f"{response}")
 
 def get_file_name(symbol: str) -> str:
-    file_name = symbol + " " + input("What should the name of the file be?\n\n>")
+    file_name = f'{symbol} ' + input("What should the name of the file be?\n\n>")
     return file_name.replace("/", "")
 
 def get_tags() -> list:
@@ -62,11 +62,10 @@ def get_tags() -> list:
 def get_input_url(input_type: str) -> tuple:
     url = input("What is the URL of the input?\n\n>")
     is_video = input_type == "Video"
-    if is_video:
-        short_code = url.split("/")[3]
-        return (url, short_code)
-    else:
+    if not is_video:
         return (url, None)
+    short_code = url.split("/")[3]
+    return (url, short_code)
 
 def get_channel_host() -> str:
     return input("Who is the channel host of the video?\n\n>")
@@ -74,7 +73,7 @@ def get_channel_host() -> str:
 def get_publish_date() -> str:
     published_today = input("""Was the video published today? [y/n]\n\n> """)
     if published_today == "y":
-        return dt.datetime.today().strftime("%Y-%m-%d")
+        return dt.datetime.now().strftime("%Y-%m-%d")
 
     is_current_year = input("""Was the video published this year? [y/n]\n\n> """)
     year = dt.datetime.now().year if is_current_year == "y" else "20" + input("""What year was the video published? Format: '2021 or '2005'\n\n> 20""")
@@ -89,7 +88,7 @@ def get_publish_date() -> str:
 
 def get_reviewed_date() -> str:
     is_reviewed = input("""Has the input been reviewed already? [y/n]\n\n> """)
-    if is_reviewed == "n" or is_reviewed == "":
+    if is_reviewed in ["n", ""]:
         return ""
 
     reviewed_today = input("""Was the input reviewed today? [y/n]\n\n> """)
